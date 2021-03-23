@@ -1,0 +1,168 @@
+Assignment 4: Space invaders
+----------------------------
+
+We're going to do a version of the classical game Space invaders
+See https://www.youtube.com/watch?v=axlx3o0codc
+
+To run the program, run the view/SIGUI file (later ... need to implement things first).
+
+Directory layout
+----------------
+The application is divided over a few directories (to put related classes
+etc. in same location). For details see below.
+
+   - assets/ Images and sounds.
+   - src/spaceinv/
+       - event/ Classes to handle events sent from model to GUI.
+       - model/ Classes for the data and logic of the game, the OO-model.
+       - view/ Visible parts (graphical user interface, GUI), see below.
+    -test/spaceinv
+       A test area for classes (methods of), see code.
+
+
+event-package
+-------------
+Use to send events (collisions etc) from model to view.
+All is implemented, nothing to do. Usage see code.
+
+model-package
+------------
+See classdiagram.png for a class diagram
+
+- SI representing the over all game. Class contains the main "game loop" (the update()
+ method). The method is called by a timer you don't need to call it anywhere.
+- SI have references to ships, projectiles, the gun, etc.
+- Ground and OuterSpace are used as collision detectors for projectiles. If hit
+ ground/outerSpace the projectile will be removed (has left the world/game).
+- SI also holds a number of game-global constants and "administrative" variables.
+- Shooter is a utility class used by all that may shoot (avoid duplicate code)
+
+view-package
+-----------
+See classdiagram.png
+
+All of the graphics and assets handling is finished, no graphics
+coding needed (of course you may make the program fancier,
+more/better images, sounds, etc. ).
+
+Interfaces
+----------
+- Positionable, Any object that may be rendered to screen must implement this (used by view)
+- Shootable, any class that should be able to fire projectiles should implement this
+  (not really used that much).
+
+Functional requirements
+-----------------------
+Program should work similar to the YouTube sample. Some points:
+
+- There should be a formation of ships moving *similar* to the YouTube clip
+- The ships should increase the speed.
+- The ships should shoot projectiles (also referred to as "bombs") randomly.
+- There should be a movable gun which can fire a projectile (only one projectile
+ active at any time)
+- If Gun projectile hits a ship or a bomb both will be destroyed.
+- Ships and bombs don't collide
+- Game points for player should be displayed. All ships earn different points.
+- There is no requirement for shelters (add if you like)
+- No need for "lives", if cannon hit by ship projectile or ship hits ground game is over
+ (... or you decide the rules)
+
+Non-functional requirements
+---------------------------
+Program should have a very good OO-structure
+- Everything should have a well defined responsibility
+- No arrays, use lists!
+- No code duplication.
+- No protected, only private!
+- Objects should be handled at the highest possible abstraction level i.e. prefer
+  variables of interface/baseclass-types
+- Any composed object should be initialized using the constructor.
+
+Timing
+------
+JavFX works at a certain frame rate (about 60 frames/sec.), we can't change this.
+- If things should move faster/slower, in/decrease the object's speed and use
+ the JavaFX time stamp, see parameter to method update() in SpaceInv.
+- Or, ... if things should move slower make them move more seldom.
+
+Paper and pen
+--------------
+This application is too complex to have in your head.
+Use paper and pen to sketch anything that can help to grasp it
+and to communicate your thoughts.
+
+Workflow
+--------
+Some classes are finished, see comments in code (= "Nothing to do here").
+This is a suggested workflow ...
+
+1.  The overall and only goal for now is to display the Gun in the GUI.
+
+    a.  Decide which data (instance variables) and methods needed in the Gun class.
+        This is a trial and error process to get some kind of start. Implement
+        preliminary.
+
+        TIP: Use upper left corner as position. Will simplify.
+        TIP: Use dx, dy for speed. When dx = dy = 0 object is idle.
+        NOTE: Anything you intend to draw on screen must implement interface Positionable
+        NOTE: y-axis is pointing down!
+
+        If needed, create some tests.
+
+    b.  In the method SIGUI.newGame. Create a minimal model. Create the Gun object and a SI
+        object (note: there is a spaceInv variable to reference the SI object at top of file).
+        Connect Gun and SI objects using a temporarily SI constructor.
+
+    c.  Finish the method SI.getPositionables. Method called from GUI to get all objects
+        to display. Add the Gun to the list. Now, the Gun should show up when program runs.
+
+2.  Next step! Now we would like the gun to move.
+
+    a.  SI object is accessible in SIGUI.keyPressed/keyReleased methods. Add methods to SI to
+        make it possible to move the gun (i.e. set the Gun speed, See also GUN_MAX_DX in SI).
+
+    b.  Do the actual move of the Gun in the SI.update method (i.e. Gun will move
+        in update() if dx != 0).
+
+3.  Try to get the Gun to fire a Projectile (Gun should implement Shootable). Let
+    method create a Projectile object and hand it over to SI (to move it in the
+    update method, until it hits OuterSpace). Must keep track, only one projectile allowed
+    at the same time. HINT: See class Shooter.
+
+4.  Implement Ground and OuterSpace. Gun moves on Ground and Gun projectile will
+    be destroyed when hitting outer space.
+
+5.  NOW! (if not done) REFACTOR! Try to eliminate duplicate code by introducing abstract
+    base classes. Careful! One step at a time. The application should be able to
+    run all the time (after each small refactoring step).
+    - Each abstract base class should have a single responsibility (represent some clear concept)
+    - Good names are AbstractNNN where NNN is the concept)
+    - All data in base class should be private so need to introduce setters/getters in base class
+    and use them in subclasses.
+    - Also need to modify constructors. Must call super class constructor first if inheriting.
+
+    This is an important milestone, rest of application depends on this. Ask TA
+    if unsure!!!
+
+6.  Start out with spaceships, Implement class BattleCruiser. It's should be
+    possible to inherit most of what's needed from the abstract base classes created.
+    Try to make it show up and them to move.
+
+7.  Implement other space ships, Bomber and Frigate.
+
+8.  Movement of ships. The movement is a bit complex.
+   - They all move individually. HINT: Move each ship in turn.
+   - When any ship hit left or right border the full formation changes direction
+     and also move to the next row.
+   - HINT: When a ship hit any border it must be moved back a small distance, else stuck.
+
+    Consider refactoring. Move any common code in ships to abstract base class.
+
+9.  Make ships drop bombs (= fire projectiles)
+
+10. Continue util game reached an acceptable functionality and design (style). See code
+    how to use the EventBus. You decide the ending of the game.
+
+11. Optional: Add any features that makes the game more interesting and fun.
+
+

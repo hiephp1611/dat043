@@ -1,0 +1,144 @@
+Assignment 1: The Mexico Dice Game
+---------------------------------
+
+For general overview and rules see
+https://en.wikipedia.org/wiki/Mexico_(game)
+For a run of the game see below.
+
+Simplifications:
+    - Any randomly chosen player starts.
+    - If more players have the same lowest result of a round, the first
+    (or randomly selected) is the looser (no replay).
+
+Clarifications:
+    - If a player rolls more than MAX_ROLLS (see example below) or the number of
+    rolls of the leader an automatic switch to next player will occur.
+
+The following steps are recommended.
+
+1.  Inspect the given code src/Mexico (read comments!).
+
+2.  Inspect the functional decomposition sketch, mexico.pdf.
+
+3.  From the above, try to figure out arguments and return values
+    for the methods in the lower parts of the sketch (the simplest ones)
+    Implement and **test** one at the time.
+
+    HINTS
+    indexOf(), the array index of some player
+    next(), the player following the current player
+    getScore(), get score for a player
+    getLoser(), get player with lowest score
+    For grading establish: not equal dices < equal dices < mexico.
+    To remove players: Create shorter array and copy all except the one to remove.
+
+4.  Combine the lower level methods to implement method higher up in sketch.
+
+5.  When most (all) method implemented start with the main game loop. Make
+    one round work then wrap a loop round to get the full game.
+
+6.  Clean up code. The code in getPlayers is clumsy. Add a constructor to
+    the Player class and use it in method.
+
+A few runs of the game ("r" is roll and "n" is next player)
+
+    Run 1  (no automatic switch in this game)
+
+    Mexico Game Started
+    Status: Olle 2 Fia 2 Lisa 2
+    Player is Lisa > r
+    Lisa got 6 and 6
+    Player is Lisa > n
+    Player is Olle > r
+    Olle got 3 and 4
+    Player is Olle > n
+    Player is Fia > r
+    Fia got 3 and 1
+    Player is Fia > n
+    Round done Fia lost!
+    Next to roll is Lisa
+    Status: Olle 2 Fia 1 Lisa 2
+    Player is Lisa > r
+    Lisa got 6 and 5
+    Player is Lisa > r
+    Lisa got 5 and 6
+    Player is Lisa > n
+    Player is Olle > r
+    Olle got 1 and 1
+    Player is Olle > r
+    Olle got 6 and 6
+    Player is Olle > n
+    Player is Fia > r
+    Fia got 1 and 5
+    Player is Fia > r
+    Fia got 3 and 3
+    Player is Fia > n
+    Round done Lisa lost!
+    Next to roll is Olle
+    Status: Olle 2 Fia 1 Lisa 1
+    Player is Olle > r
+    Olle got 4 and 1
+    Player is Olle > n
+    Player is Fia > r
+    Fia got 1 and 4
+    Player is Fia > n
+    Player is Lisa > r
+    Lisa got 2 and 3
+    Player is Lisa > n
+    Round done Lisa lost!
+    Next to roll is Olle
+    Lisa has no resources will leave game.
+    Status: Olle 2 Fia 1
+    Player is Olle >             (not finished)
+
+    Run 2  (automatic switch of player)
+
+    Mexico Game Started
+    Status: Olle 2 Fia 2 Lisa 2
+    Player is Olle > r
+    Olle got 3 and 3
+    Player is Olle > r
+    Olle got 2 and 5
+    Player is Olle > n      (Olle 2 rolls)
+    Player is Fia > r
+    Fia got 3 and 4
+    Player is Fia > r
+    Fia got 1 and 4
+    Player is Fia > r      (Fia tried to do 3 rolls)
+    Player is Lisa >       (Switch to next)
+    etc.
+
+    Run 3  (game ending)
+
+    Mexico Game Started
+    Status: Olle 1 Fia 1 Lisa 1
+    Player is Lisa > r
+    Lisa got 2 and 5
+    Player is Lisa > n
+    Player is Olle > r
+    Olle got 3 and 3
+    Player is Olle > n
+    Player is Fia > r
+    Fia got 6 and 5
+    Player is Fia > n
+    Round done Lisa lost!
+    Next to roll is Olle
+    Lisa has no resources will leave game.
+    Status: Olle 1 Fia 1
+    Player is Olle > r
+    Olle got 1 and 5
+    Player is Olle > n
+    Player is Fia > r
+    Fia got 4 and 5
+    Player is Fia > n
+    Round done Olle lost!
+    Next to roll is Fia
+    Olle has no resources will leave game.
+    Status: Fia 1
+    Game Over, winner is Fia. Will get 2 from pot
+
+ 
+
+
+ 
+ 
